@@ -1,0 +1,26 @@
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   169  100   169    0     0  26497      0 --:--:-- --:--:-- --:--:-- 28166HTTP/1.1 200 OK
+Server: Werkzeug/3.1.6 Python/3.14.3
+Date: Tue, 14 Jul 2026 12:53:57 GMT
+Content-Type: application/json
+Content-Length: 169
+Access-Control-Allow-Origin: *
+Permissions-Policy: browsing-topics=()
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+Content-Security-Policy: default-src 'self'; object-src 'none'
+Referrer-Policy: strict-origin-when-cross-origin
+Connection: close
+
+[
+  {
+    "address": "123 Main St",
+    "date_joined": "2026-07-14",
+    "email": "john@example.com",
+    "id": 1,
+    "name": "John Doe",
+    "phone": "555-1234"
+  }
+]
+
