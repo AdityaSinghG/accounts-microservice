@@ -1,37 +1,23 @@
 """
-REST API Routes
+Account Service Routes
 """
-
-from flask import Blueprint, jsonify, request
-
+from flask import jsonify, request, abort
+from service import app, db
 from service.models import Account
 
-api = Blueprint("api", __name__)
+
+@app.route("/health")
+def health():
+    """Health check endpoint"""
+    return jsonify({"status": "OK"}), 200
 
 
-@api.route("/")
-def index():
-    """
-    Home Route
-    """
-    return jsonify(
-        {
-            "name": "Accounts Microservice",
-            "version": "1.0.0",
-            "status": "running",
-        }
-    )
-
-
-##############################################################################
-# CREATE AN ACCOUNT
-##############################################################################
-@api.route("/accounts", methods=["POST"])
+@app.route("/accounts", methods=["POST"])
 def create_account():
-    """
-    Creates an account
-    """
+    """Create a new account"""
     data = request.get_json()
+    if not data:
+        abort(400, description="No data provided")
 
     account = Account()
     account.deserialize(data)
@@ -40,74 +26,52 @@ def create_account():
     return jsonify(account.serialize()), 201
 
 
-##############################################################################
-# LIST ALL ACCOUNTS
-##############################################################################
-@api.route("/accounts", methods=["GET"])
+@app.route("/accounts", methods=["GET"])
 def list_accounts():
-    """
-    Returns all accounts
-    """
+    """List all accounts"""
     accounts = Account.all()
-
-    results = []
-
-    for account in accounts:
-        results.append(account.serialize())
-
-    return jsonify(results), 200
+    return jsonify([a.serialize() for a in accounts]), 200
 
 
-##############################################################################
-# READ ACCOUNT
-##############################################################################
-@api.route("/accounts/<int:account_id>", methods=["GET"])
-def get_account(account_id):
-    """
-    Returns one account
-    """
+@app.route("/accounts/<int:account_id>", methods=["GET"])
+def read_account(account_id):
+    """Read a single account"""
     account = Account.find(account_id)
-
     if not account:
-        return jsonify({"error": "Account not found"}), 404
-
+        abort(404, description=f"Account {account_id} not found")
     return jsonify(account.serialize()), 200
 
 
-##############################################################################
-# UPDATE ACCOUNT
-##############################################################################
-@api.route("/accounts/<int:account_id>", methods=["PUT"])
+@app.route("/accounts/<int:account_id>", methods=["PUT"])
 def update_account(account_id):
-    """
-    Updates an account
-    """
+    """Update an account"""
     account = Account.find(account_id)
-
     if not account:
-        return jsonify({"error": "Account not found"}), 404
+        abort(404, description=f"Account {account_id} not found")
 
     data = request.get_json()
-
     account.deserialize(data)
     account.update()
 
     return jsonify(account.serialize()), 200
 
 
-##############################################################################
-# DELETE ACCOUNT
-##############################################################################
-@api.route("/accounts/<int:account_id>", methods=["DELETE"])
+@app.route("/accounts/<int:account_id>", methods=["DELETE"])
 def delete_account(account_id):
-    """
-    Deletes an account
-    """
+    """Delete an account"""
     account = Account.find(account_id)
-
     if not account:
-        return jsonify({"error": "Account not found"}), 404
+        abort(404, description=f"Account {account_id} not found")
 
     account.delete()
-
     return "", 204
+
+
+@app.errorhandler(400)
+def bad_request(e):
+    return jsonify({"error": str(e)}), 400
+
+
+@app.errorhandler(404)
+def not_found(e):
+    return jsonify({"error": str(e)}), 404
