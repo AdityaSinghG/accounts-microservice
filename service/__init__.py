@@ -1,26 +1,22 @@
 """
 Accounts Microservice
 """
-
-import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_talisman import Talisman
+from flask_cors import CORS
 
-# Create Flask application
+# Create Flask app
 app = Flask(__name__)
+app.config.from_object("config.Config")
 
-# Configuration
-app.config["SECRET_KEY"] = "dev_secret_key"
-
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
-    "DATABASE_URI",
-    "sqlite:///accounts.db"
-)
-
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-# Database object
+# Initialize extensions
 db = SQLAlchemy(app)
 
-# Import routes after app/db initialization
-from service import routes
+# Security headers with Talisman
+talisman = Talisman(app, force_https=False)
+
+# CORS policy
+CORS(app)
+
+from service import routes  # noqa: E402, F401
