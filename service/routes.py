@@ -2,7 +2,7 @@
 Account Service Routes
 """
 from flask import jsonify, request, abort
-from service import app, db
+from service import app
 from service.models import Account
 
 
