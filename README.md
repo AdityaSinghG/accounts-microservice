@@ -1,15 +1,9 @@
 # Accounts Microservice
 
-A REST API microservice for managing customer accounts.
+[![CI Build](https://github.com/AdityaSinghG/accounts-microservice/actions/workflows/ci-build.yaml/badge.svg)](https://github.com/AdityaSinghG/accounts-microservice/actions/workflows/ci-build.yaml)
 
-## Features
-
-- Create an account
-- Read account details
-- Update an account
-- Delete an account
-- List all accounts
+## Description
+This is a RESTful microservice for managing accounts, built with Flask and SQLAlchemy.
 
 ## Build Status
-
-The build status badge will be added after configuring GitHub Actions.
+The badge above shows the current build status after a successful CI build.
