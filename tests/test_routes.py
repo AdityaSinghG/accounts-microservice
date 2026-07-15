@@ -100,17 +100,17 @@ class TestAccountRoutes(unittest.TestCase):
         resp = self.client.get("/accounts/9999")
         self.assertEqual(resp.status_code, 404)
 
-def test_cors_header(self):
-    """Test CORS header is returned"""
-    resp = self.client.get("/health")
-    self.assertEqual(resp.status_code, 200)
-    self.assertIn("Access-Control-Allow-Origin", resp.headers)
+    def test_cors_header(self):
+        """Test CORS header is returned"""
+        resp = self.client.get("/health")
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn("Access-Control-Allow-Origin", resp.headers)
 
-def test_security_headers(self):
-    """Test security headers are returned"""
-    resp = self.client.get("/health")
-    self.assertIn("X-Frame-Options", resp.headers)
-    self.assertIn("X-Content-Type-Options", resp.headers)
+    def test_security_headers(self):
+        """Test security headers are returned"""
+        resp = self.client.get("/health")
+        self.assertIn("X-Frame-Options", resp.headers)
+        self.assertIn("X-Content-Type-Options", resp.headers)
 
 
 if __name__ == "__main__":
